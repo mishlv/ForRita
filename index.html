@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rita Project</title>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffc1cc, #ffdfd3);
+      overflow: hidden;
+    }
+
+    .message-box {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
+      min-height: 110px;
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      color: #d63384;
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2000;
+    }
+
+    .menu.active~.message-box {
+      opacity: 1;
+    }
+
+    .menu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .toggle {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(214, 51, 132, 0.2);
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ✅ חשוב: כל הילדים לא "תופסים" קליק */
+    .toggle * {
+      pointer-events: none;
+    }
+
+    .toggle .centerText {
+      color: #d63384;
+      font-weight: 800;
+      font-size: 1.25em;
+      line-height: 1.05;
+      letter-spacing: 0.2px;
+      transition: 0.4s;
+      user-select: none;
+    }
+
+    .toggle .flower {
+      position: absolute;
+      color: #ff69b4;
+      font-size: 3.5em;
+      opacity: 0;
+      transform: scale(0);
+      transition: 0.4s;
+    }
+
+    .menu.active .toggle .centerText {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .menu.active .toggle .flower {
+      opacity: 1;
+      transform: scale(1) rotate(180deg);
+    }
+
+    .menu li {
+      position: absolute;
+      list-style: none;
+      top: 50%;
+      left: 50%;
+      transition: 0.6s;
+      transition-delay: calc(0.1s * var(--i));
+      transform: translate(-50%, -50%);
+    }
+
+    .menu.active li {
+      transform: translate(-50%, -50%) rotate(calc(360deg / 8 * var(--i))) translateX(115px);
+    }
+
+    .menu li a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      color: #ff1493;
+      font-size: 1.6em;
+      transform: rotate(calc(-360deg / 8 * var(--i)));
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu li a:hover {
+      transform: rotate(calc(-360deg / 8 * var(--i))) scale(1.2);
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="bgMusic" loop>
+    <source src="https://www.chosic.com/wp-content/uploads/2020/06/Chopin-Nocturne-op.9-No.2.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="menu">
+    <div class="toggle" id="mainToggle">
+      <span class="centerText">שלום<br>ללחוץ<br>עלי</span>
+      <ion-icon name="flower" class="flower"></ion-icon>
+    </div>
+
+    <li style="--i:0;"><a onclick="showMsg('אני כל יום אוהב אותך יותר ויותר ❤️')">
+        <ion-icon name="heart"></ion-icon>
+      </a></li>
+    <li style="--i:1;"><a onclick="showMsg('את המתנה הכי גדולה שקיבלתי 🎁')">
+        <ion-icon name="gift-outline"></ion-icon>
+      </a></li>
+    <li style="--i:2;"><a onclick="showMsg('את רואה את כמות הכוכבים בשמים ? תכפילי אותם באינסוף ככה  אני אוהב אותך וגם זה לא מספיק  ✨')">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </a></li>
+    <li style="--i:3;"><a onclick="showMsg('את נוחרת ממש חמוד ואת ממש מתוקה שאת ישנה (מה חשבת שהכול פה יהיה חמוד ורומנטי) 🌸')">
+        <ion-icon name="rose-outline"></ion-icon>
+      </a></li>
+    <li style="--i:4;"><a onclick="showMsg(' את יודעת שחיוך שלך ממיס ? יש לך את החיוך הכי מתוק הכי חם והכי יפה שיש   ☀️')">
+        <ion-icon name="sunny-outline"></ion-icon>
+      </a></li>
+    <li style="--i:5;"><a onclick="showMsg(' אני אוהב אותך עד הירח ובחזרה ושוב 🌙')">
+        <ion-icon name="moon-outline"></ion-icon>
+      </a></li>
+    <li style="--i:6;"><a onclick="showMsg('את הכי יפה הכי מושלמת והכי מדהימה שיש  ⭐')">
+        <ion-icon name="star-outline"></ion-icon>
+      </a></li>
+    <li style="--i:7;"><a onclick="showMsg('אין עליך בעולם הזה פופסיק  💎')">
+        <ion-icon name="diamond-outline"></ion-icon>
+      </a></li>
+  </div>
+
+  <div class="message-box" id="msgBox">
+    <h2 id="msgTitle">ריטושששששש</h2>
+    <p id="msgContent" style="margin-top: 8px;">בובי מושלמת שלי אני כל כך אוהב אותך! זאת הייתה צריכה להיות הזמנה ליום האהבה אבל זה מה שיצא בסוף</p>
+  </div>
+
+  <script>
+    const menu = document.querySelector('.menu');
+    const msgContent = document.getElementById('msgContent');
+    const music = document.getElementById('bgMusic');
+    let isPlaying = false;
+    // ✅ חיבור קליק בצורה יציבה
+    document.querySelector('.toggle').addEventListener('click', () => {
+      menu.classList.toggle('active');
+      if (!isPlaying) {
+        music.play().catch(() => {});
+        isPlaying = true;
+      }
+      if (!menu.classList.contains('active')) {
+        msgContent.innerText = "תלחצי על האייקונים שסביב הפרח...";
+      }
+    });
+
+    function showMsg(text) {
+      msgContent.style.opacity = 0;
+      setTimeout(() => {
+        msgContent.innerText = text;
+        msgContent.style.opacity = 1;
+      }, 200);
+    }
+  </script>
+</body>
+
+</html>
